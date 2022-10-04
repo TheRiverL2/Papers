@@ -1,0 +1,29 @@
+name: Generate Paper
+
+on: push
+
+jobs:
+  pdf:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Convert
+        uses: shrink/actions-document-publish@v1
+        id: gen-document
+        with:
+          sources: 'paper.md'
+      - name: Upload Document
+        uses: actions/upload-artifact@v2
+        id: upload-document
+        with:
+          name: 'GreenPaper.pdf'
+          path: ${{ steps.gen-document.outputs.pdf }}
+
+      - name: Update release
+        if: github.ref == 'refs/heads/main'
+        uses: johnwbyrd/update-release@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ${{ steps.gen-document.outputs.pdf }}
+          release: "Green Paper"
