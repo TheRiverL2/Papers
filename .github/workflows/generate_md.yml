@@ -21,7 +21,7 @@ jobs:
           path: ${{ steps.gen-document.outputs.pdf }}
 
       - name: Update release
-        if: github.ref == 'main'
+        if: github.ref == 'refs/heads/master'
         uses: johnwbyrd/update-release@v1.0.0
         with:
           token: ${{ secrets.TOKEN }}
