@@ -1,0 +1,44 @@
+name: Generate Paper
+
+on: push
+
+jobs:
+  pdf:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Convert
+        uses: shrink/actions-document-publish@v1
+        id: gen-document
+        with:
+          sources: 'paper.md'
+      - name: Upload Document
+        uses: actions/upload-artifact@v2
+        id: upload-document
+        with:
+          name: 'GreenPaper.pdf'
+          path: ${{ steps.gen-document.outputs.pdf }}
+          
+      - name: Create Release
+        id: create_release
+        if: github.ref == 'refs/heads/main'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./Paper.pdf
+          asset_name: GreenPaper.pdf
+          asset_content_type: application/pdf
