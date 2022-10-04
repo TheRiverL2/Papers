@@ -21,7 +21,7 @@ jobs:
           path: ${{ steps.gen-document.outputs.pdf }}
           
       - name: Update release
-        uses: johnwbyrd/update-release@v1
+        uses: johnwbyrd/update-release@v1.0.0
         with:
           token: ${{ secrets.TOKEN }}
           files: ${{ steps.gen-document.outputs.pdf }}
