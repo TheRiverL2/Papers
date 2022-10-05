@@ -29,6 +29,9 @@ The normal blockchain need to wait the block to be confirmed to get new data. Bu
 ### Stream
 The normal blockchain is using transaction to store data, and read by others. But the River is using stream to transfer data.
 
+## Future plan
+There will be a blueprint for River network. And we will build the River network with the blueprint. When the River network is online, We will release a white paper for the River network.
+
 ## Q&A
 ### If River not need to wait for the block to be confirmed, how to prevent the data been hacked?
 
